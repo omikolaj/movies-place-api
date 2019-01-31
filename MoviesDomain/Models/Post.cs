@@ -1,6 +1,6 @@
 using System;
 
-namespace MoviesDomain
+namespace MoviesDomain.Models
 {
   public class Post
   {
