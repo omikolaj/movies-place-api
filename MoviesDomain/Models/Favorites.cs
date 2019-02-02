@@ -1,11 +1,13 @@
+using System.Collections.Generic;
+
 namespace MoviesDomain.Models
 {
   public class Favorites
   {
-    public int FavoriteID { get; set; }
-    public int MovieID { get; set; }
-    public int UserID { get; set; }
-    public string Note { get; set; }
+    public int FavoritesID { get; set; }
+    //has_many user_favorites
+    public IEnumerable<UserFavorites> UserFavorites { get; set; }
+    
   }
 
 }
