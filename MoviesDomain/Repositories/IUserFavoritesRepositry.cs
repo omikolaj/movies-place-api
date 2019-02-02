@@ -10,7 +10,7 @@ namespace MoviesDomain.Repositories
   {
     Task<List<UserFavorites>> GetAllAsync(CancellationToken ct = default(CancellationToken));
 
-    Task<UserFavorites> GetByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+    Task<UserFavorites> GetByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
     Task<List<UserFavorites>> GetAllByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 

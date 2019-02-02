@@ -5,7 +5,8 @@ namespace MoviesDomain.ViewModels
 {
   public class CommentViewModel
   {
-    public int CommentID { get; set; }  
+    public int CommentID { get; set; }
+    public string Content { get; set; }  
     //belongs_to post
     public int PostID { get; set; }
     //belongs_to user

@@ -7,7 +7,7 @@ namespace MoviesDomain.Converters
 {
   public static class CommentConverter
   {
-    public static CommentViewModel Converter(Comment comment)
+    public static CommentViewModel Convert(Comment comment)
     { 
       CommentViewModel commentViewModel = new CommentViewModel();
       commentViewModel.CommentID = comment.CommentID;      

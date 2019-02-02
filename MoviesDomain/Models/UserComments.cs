@@ -5,8 +5,7 @@ namespace MoviesDomain.Models
 {
   public class UserComment
   {
-    public int UserCommentID { get; set; }
-    [Required]  
+    public int UserCommentID { get; set; }    
     public string Content { get; set; }
     //belongs_to comment
     public int CommentID { get; set; }

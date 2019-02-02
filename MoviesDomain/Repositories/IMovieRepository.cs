@@ -8,7 +8,7 @@ namespace MoviesDomain.Repositories
 {
   public interface IMovieRepository : IDisposable
   {
-    Task<Movie> GetByMoviePostIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+    Task<Movie> GetByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
     Task<Movie> AddAsync(Movie movie, CancellationToken ct = default(CancellationToken));
 
