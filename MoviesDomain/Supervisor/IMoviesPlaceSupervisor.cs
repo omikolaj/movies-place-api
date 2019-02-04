@@ -34,6 +34,8 @@ namespace MoviesDomain.Supervisor
     //Movie
     Task<MovieViewModel> GetMovieByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
+    Task<MovieViewModel> GetMovieByPostByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+
     Task<MovieViewModel> AddMovieAsync(MovieViewModel movieViewModel, CancellationToken ct = default(CancellationToken));
 
     Task<MovieViewModel> DeleteMovieAsync(MovieViewModel movieViewModel, CancellationToken ct = default(CancellationToken));
@@ -55,6 +57,8 @@ namespace MoviesDomain.Supervisor
     Task<List<UserViewModel>> GetAllUsersAsync(CancellationToken ct = default(CancellationToken));
 
     Task<UserViewModel> GetUserByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+
+    Task<UserViewModel> GetUserByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
     Task<UserViewModel> AddUserAsync(UserViewModel user, CancellationToken ct = default(CancellationToken));
 

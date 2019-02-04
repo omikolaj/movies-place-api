@@ -16,6 +16,7 @@ namespace MoviesDomain.ViewModels
     public RatingTypes Rating { get; set; }   
     public DateTime PostDate { get; set; }    
     public IList<Comment> Comments { get; set; }      
+    public int MovieID { get; set; }
     public MovieViewModel Movie { get; set; }    
   }
 }

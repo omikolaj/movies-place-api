@@ -16,6 +16,14 @@ namespace MoviesDomain.Supervisor
       return movieViewModel;
     }
 
+    public async Task<MovieViewModel> GetMovieByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken))
+    {
+      MovieViewModel movieViewModel = MovieConverter.Convert(await _movieRepository.GetByPostIDAsync(ID, ct));
+      movieViewModel.Favorites = await GetAllFavoritesByMovieIDAsync(movieViewModel.MovieID, ct);
+
+      return movieViewModel;
+    }
+
     public async Task<MovieViewModel> AddMovieAsync(MovieViewModel movieViewModel, CancellationToken ct = default(CancellationToken))
     {
       Movie movie = new Movie()
