@@ -6,13 +6,11 @@ namespace MoviesDomain.ViewModels
   public class CommentViewModel
   {
     public int CommentID { get; set; }
-    public string Content { get; set; }  
-    //belongs_to post
+    public string Content { get; set; }      
     public int PostID { get; set; }
-    //belongs_to user
-    public int UserID { get; set; }
-    public IList<UserCommentViewModel> UserComments { get; set; }
-    public UserCommentViewModel User { get; set; }
     public PostViewModel Post { get; set; }
+    public int UserID { get; set; }        
+    public UserViewModel User { get; set; }
+    
   }
 }

@@ -1,16 +1,13 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using MoviesDomain.Models;
 
 namespace MoviesDomain.ViewModels
 {
   public class MovieViewModel
   {
-    [Required]
-    public int MovieID { get; set; }
-    //belongs_to MoviePost
-    [Required]
-    public int MoviePostID { get; set; }
-    [Required]
-    [StringLength(50, MinimumLength=3)]    
+    public int MovieID { get; set; }            
     public string Title { get; set; }
+    public IEnumerable<FavoriteViewModel> Favorites { get; set; }
   }
 }

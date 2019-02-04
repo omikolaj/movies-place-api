@@ -12,5 +12,7 @@ namespace MoviesDomain.Repositories
 
     Task<Movie> AddAsync(Movie movie, CancellationToken ct = default(CancellationToken));
 
+    Task<bool> DeleteAsync(int ID, CancellationToken ct = default(CancellationToken));
+
   }
 }

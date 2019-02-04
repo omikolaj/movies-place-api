@@ -6,15 +6,15 @@ using MoviesDomain.Models;
 
 namespace MoviesDomain.Repositories
 {
-  public interface IFavoritesRepository : IDisposable
+  public interface IFavoriteRepository : IDisposable
   {
-    Task<List<Favorites>> GetAllAsync(CancellationToken ct = default(CancellationToken));
+    Task<List<Favorite>> GetAllByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
-    Task<Favorites> GetByIDAsync(CancellationToken ct = default(CancellationToken));
+    Task<List<Favorite>> GetAllByMovieIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
-    Task<List<Favorites>> GetAllByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+    Task<Favorite> AddAsync(Favorite favorite, CancellationToken ct = default(CancellationToken)); 
 
-    Task<Favorites> AddAsync(Favorites favorites, CancellationToken ct = default(CancellationToken));    
+    Task<bool> DeleteAsync(int ID, CancellationToken ct = default(CancellationToken));
     
   }
 }

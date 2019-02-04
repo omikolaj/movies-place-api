@@ -13,6 +13,7 @@ namespace MoviesDomain.Converters
       commentViewModel.CommentID = comment.CommentID;      
       commentViewModel.Content = comment.Content;
       commentViewModel.PostID = comment.PostID;
+      commentViewModel.UserID = comment.UserID;
 
       return commentViewModel;
     }
@@ -25,6 +26,7 @@ namespace MoviesDomain.Converters
         comment.CommentID = c.CommentID;
         comment.Content = c.Content;
         comment.PostID = c.PostID;
+        comment.UserID = c.UserID;
         return comment;
       }).ToList();
     }

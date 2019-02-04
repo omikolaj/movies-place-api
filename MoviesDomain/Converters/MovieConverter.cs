@@ -11,8 +11,7 @@ namespace MoviesDomain.Converters
     {
       MovieViewModel movieViewModel = new MovieViewModel();
       movieViewModel.MovieID = movie.MovieID;
-      movieViewModel.Title = movie.Title;
-      movieViewModel.MoviePostID = movie.MoviePostID;
+      movieViewModel.Title = movie.Title;    
 
       return movieViewModel;
     }
@@ -22,8 +21,7 @@ namespace MoviesDomain.Converters
       return movies.Select(m => 
       {
         MovieViewModel movieViewModel = new MovieViewModel();
-        movieViewModel.MovieID = m.MovieID;
-        movieViewModel.MoviePostID = m.MoviePostID;
+        movieViewModel.MovieID = m.MovieID;        
         movieViewModel.Title = m.Title;
         return movieViewModel;
       }).ToList();

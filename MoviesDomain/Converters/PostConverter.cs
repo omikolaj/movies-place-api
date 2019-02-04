@@ -9,9 +9,8 @@ namespace MoviesDomain.Converters
   {
     public static PostViewModel Convert(Post post)
     {
-      PostViewModel postViewModel = new PostViewModel();
-      postViewModel.Description = post.Description;
-      postViewModel.MoviePostID = post.MoviePostID;
+      PostViewModel postViewModel = new PostViewModel();      
+      postViewModel.Description = post.Description;      
       postViewModel.PostDate = post.PostDate;
       postViewModel.PostID = post.PostID;
       postViewModel.UserID = post.UserID;
@@ -24,8 +23,7 @@ namespace MoviesDomain.Converters
       return posts.Select(m => 
       {
         PostViewModel postViewModel = new PostViewModel();
-        postViewModel.Description = m.Description;
-        postViewModel.MoviePostID = m.MoviePostID;
+        postViewModel.Description = m.Description;        
         postViewModel.PostDate = m.PostDate;
         postViewModel.PostID = m.PostID;
         postViewModel.UserID = m.UserID;

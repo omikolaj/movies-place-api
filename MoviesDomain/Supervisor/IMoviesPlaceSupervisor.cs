@@ -20,24 +20,23 @@ namespace MoviesDomain.Supervisor
 
     Task<bool> DeleteCommentAsync(int ID, CancellationToken ct = default(CancellationToken));
 
-    //Favorites
-    Task<List<FavoritesViewModel>> GetAllFavoritesAsync(CancellationToken ct = default(CancellationToken));
+    //Favorite
+    Task<List<FavoriteViewModel>> GetAllFavoritesAsync(CancellationToken ct = default(CancellationToken));
 
-    Task<List<FavoritesViewModel>> GetAllFavoritesByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+    Task<List<FavoriteViewModel>> GetAllFavoritesByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
-    Task<FavoritesViewModel> AddFavoriteAsync(FavoritesViewModel favoritesViewModel, CancellationToken ct = default(CancellationToken));    
+    Task<List<FavoriteViewModel>> GetFavoriteByMovieID(int ID, CancellationToken ct = default(CancellationToken));
 
-    //MoviePost
-    Task<List<MoviePostViewModel>> GetAllMoviesPostsAsync(CancellationToken ct = default(CancellationToken));
+    Task<List<FavoriteViewModel>> GetFavoriteByUserID(int ID, CancellationToken ct = default(CancellationToken));
 
-    Task<MoviePostViewModel> GetMoviePostByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
-
-    Task<MoviePostViewModel> AddMoviePostAsync(MoviePostViewModel moviePostViewModel, CancellationToken ct = default(CancellationToken));
+    Task<FavoriteViewModel> AddFavoriteAsync(FavoriteViewModel favoriteViewModel, CancellationToken ct = default(CancellationToken));    
 
     //Movie
     Task<MovieViewModel> GetMovieByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
     Task<MovieViewModel> AddMovieAsync(MovieViewModel movieViewModel, CancellationToken ct = default(CancellationToken));
+
+    Task<MovieViewModel> DeleteMovieAsync(MovieViewModel movieViewModel, CancellationToken ct = default(CancellationToken));
 
     //Post
     Task<List<PostViewModel>> GetAllPostsAsync(CancellationToken ct = default(CancellationToken));
@@ -51,32 +50,6 @@ namespace MoviesDomain.Supervisor
     Task<bool> UpdatePostAsync(PostViewModel postViewModel, CancellationToken ct = default(CancellationToken));
 
     Task<bool> DeletePostAsync(PostViewModel postViewModel, CancellationToken ct = default(CancellationToken));
-
-    //UserComments
-    Task<List<UserCommentViewModel>> GetAllUsersCommentsAsync (CancellationToken ct = default(CancellationToken));
-
-    Task<UserCommentViewModel> GetUserCommentByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
-
-    Task<List<UserCommentViewModel>> GetAllUserCommentsByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
-
-    Task<UserCommentViewModel> AddUserCommentAsync(UserCommentViewModel userCommentViewModel, CancellationToken ct = default(CancellationToken));
-
-    Task<bool> UpdateUserCommentAsync(UserCommentViewModel userCommentViewModel, CancellationToken ct = default(CancellationToken));
-
-    Task<bool> DeleteUserCommentAsync(UserCommentViewModel userCommentViewModel, CancellationToken ct = default(CancellationToken));
-
-    //UserFavorites
-    Task<List<UserFavoritesViewModel>> GetAllUsersFavoritesAsync(CancellationToken ct = default(CancellationToken));
-
-    Task<UserFavoritesViewModel> GetUserFavoritesByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
-
-    Task<List<UserFavoritesViewModel>> GetAllUserFavoritesByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
-
-    Task<UserFavoritesViewModel> AddUserFavoritesAsync(UserFavoritesViewModel userFavoritesViewModel, CancellationToken ct = default(CancellationToken));
-
-    Task<bool> UpdateUserFavoritesAsync(UserFavoritesViewModel userFavoritesViewModel, CancellationToken ct = default(CancellationToken));
-
-    Task<bool> DeleteUserFavoritesAsync(UserFavoritesViewModel userFavoritesViewModel, CancellationToken ct = default(CancellationToken));
 
     //User
     Task<List<UserViewModel>> GetAllUsersAsync(CancellationToken ct = default(CancellationToken));

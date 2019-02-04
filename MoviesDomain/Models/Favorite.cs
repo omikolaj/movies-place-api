@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MoviesDomain.Models
 {
-  public class Comment
+  public class Favorite
   {
-    public int CommentID { get; set; }
-    [Required]
-    public string Content { get; set; }
-    [Display(Name = "PostID")]
-    public int PostID { get; set; }
+    public int FavoriteID { get; set; }
+    public string Note { get; set; }
     [Display(Name = "UserID")]
     public int UserID { get; set; }
+    [Display(Name = "MovieID")]
+    public int MovieID { get; set; }    
+    public Movie Movie { get; set; }
     public User User { get; set; }
-    
   }
+
 }
