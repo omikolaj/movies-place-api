@@ -18,7 +18,7 @@ namespace MoviesDomain.Repositories
 
     Task<bool> UpdateAsync(Post post, CancellationToken ct = default(CancellationToken));
 
-    Task<bool> DeleteAsync(Post post, CancellationToken ct = default(CancellationToken));
+    Task<bool> DeleteAsync(int ID, CancellationToken ct = default(CancellationToken));
 
   }
 }

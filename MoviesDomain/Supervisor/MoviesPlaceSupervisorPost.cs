@@ -29,11 +29,13 @@ namespace MoviesDomain.Supervisor
     public async Task<List<PostViewModel>> GetAllPostsByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken))
     {
       List<PostViewModel> postsViewModel = PostConverter.ConvertList(await _postRepository.GetAllByUserIDAsync(ID, ct));
-      return postsViewModel.Select(async p => 
+      postsViewModel.Select(async p => 
       {
-        p.Movie = await GetMovieByPostIDAsync(p.PostID, ct);
+        p.Movie = await GetMovieByIDAsync(p.MovieID, ct);
         p.User = await GetUserByIDAsync(p.UserID, ct);
       });      
+
+      return postsViewModel;
     }
 
     public async Task<PostViewModel> AddPostAsync(PostViewModel postViewModel, CancellationToken ct = default(CancellationToken))
@@ -57,12 +59,22 @@ namespace MoviesDomain.Supervisor
 
     public async Task<bool> UpdatePostAsync(PostViewModel postViewModel, CancellationToken ct = default(CancellationToken))
     {
-      
+      Post post = await _postRepository.GetByIDAsync(postViewModel.PostID, ct);
+
+      if(post == null) return false;
+
+      post.Title = postViewModel.Title;
+      post.Description = postViewModel.Description;
+      post.MovieID = postViewModel.MovieID;
+      post.Rating = postViewModel.Rating;
+      post.MovieID = postViewModel.MovieID;      
+
+      return await _postRepository.UpdateAsync(post, ct);
     }
 
-    public async Task<bool> DeletePostAsync(PostViewModel postViewModel, CancellationToken ct = default(CancellationToken))
+    public async Task<bool> DeletePostAsync(int ID, CancellationToken ct = default(CancellationToken))
     {
-
+      return await _postRepository.DeleteAsync(ID, ct);
     }
   }
 }

@@ -18,7 +18,7 @@ namespace MoviesDomain.Converters
       return userViewModel;
     }
 
-    public static List<UserViewModel> ConvertList(IEnumerable<UserViewModel> users)
+    public static List<UserViewModel> ConvertList(IEnumerable<User> users)
     {
       return users.Select(u =>
       {
