@@ -16,6 +16,15 @@ namespace MoviesDataCore.Repositories
         _dbContext = dbContext;
     }
 
+    #region Private Methods
+
+    private async Task<bool> CommentExists(int ID, CancellationToken ct = default(CancellationToken))
+    {
+      return await GetByIDAsync(ID, ct) != null;
+    }
+
+    #endregion
+
     public async Task<Comment> AddAsync(Comment newComment, CancellationToken ct = default(CancellationToken))
     {
       _dbContext.Comments.Add(newComment);
@@ -25,6 +34,8 @@ namespace MoviesDataCore.Repositories
 
     public async Task<bool> DeleteAsync(int ID, CancellationToken ct = default(CancellationToken))
     {
+      if(!await CommentExists(ID, ct)) return false;
+
       Comment commentToRemove = _dbContext.Comments.Find(ID);
       _dbContext.Comments.Remove(commentToRemove);
       await _dbContext.SaveChangesAsync(ct);
@@ -48,6 +59,8 @@ namespace MoviesDataCore.Repositories
 
     public async Task<bool> UpdateAsync(Comment comment, CancellationToken ct = default(CancellationToken))
     {
+      if(!await CommentExists(comment.CommentID, ct)) return false;
+
       _dbContext.Comments.Update(comment);
       await _dbContext.SaveChangesAsync(ct);
       return true;

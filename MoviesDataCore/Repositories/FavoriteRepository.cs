@@ -16,6 +16,15 @@ namespace MoviesDataCore.Repositories
         _dbContext = dbContext;
     }
 
+    #region Private Methods
+
+    private async Task<bool> FavoriteExists(int ID, CancellationToken ct = default(CancellationToken))
+    {
+      return await GetByIDAsync(ID, ct) != null;
+    }
+
+    #endregion
+
     public async Task<Favorite> AddAsync(Favorite favorite, CancellationToken ct = default(CancellationToken))
     {
       _dbContext.Favorites.Add(favorite);
@@ -25,6 +34,8 @@ namespace MoviesDataCore.Repositories
 
     public async Task<bool> DeleteAsync(int ID, CancellationToken ct = default(CancellationToken))
     {
+      if(!await FavoriteExists(ID, ct)) return false;
+
       Favorite favToDelete = _dbContext.Favorites.Find(ID);
       _dbContext.Favorites.Remove(favToDelete);
       await _dbContext.SaveChangesAsync(ct);
@@ -41,9 +52,9 @@ namespace MoviesDataCore.Repositories
       return await _dbContext.Favorites.Where(f => f.UserID == ID).ToListAsync(ct);
     }
 
-    public async Task<List<Favorite>> GetAllByIDAsync(int ID, CancellationToken ct = default(CancellationToken))
+    public async Task<Favorite> GetByIDAsync(int ID, CancellationToken ct = default(CancellationToken))
     {
-      return await _dbContext.Favorites.Where(f => f.FavoriteID == ID).ToListAsync(ct);
+      return await _dbContext.Favorites.FindAsync(ID);
     }
 
     public void Dispose()
