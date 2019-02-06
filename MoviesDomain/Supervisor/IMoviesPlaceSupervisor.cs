@@ -25,9 +25,7 @@ namespace MoviesDomain.Supervisor
 
     Task<List<FavoriteViewModel>> GetAllFavoritesByMovieIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
-    Task<FavoriteViewModel> GetFavoriteByMovieID(int ID, CancellationToken ct = default(CancellationToken));
-
-    Task<FavoriteViewModel> GetFavoriteByUserID(int ID, CancellationToken ct = default(CancellationToken));
+    Task<FavoriteViewModel> GetFavoriteByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
     Task<FavoriteViewModel> AddFavoriteAsync(FavoriteViewModel favoriteViewModel, CancellationToken ct = default(CancellationToken));
 

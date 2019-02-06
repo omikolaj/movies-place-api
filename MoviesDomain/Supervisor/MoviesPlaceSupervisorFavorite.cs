@@ -23,18 +23,11 @@ namespace MoviesDomain.Supervisor
       return favorites;
     }
 
-    public async Task<FavoriteViewModel> GetFavoriteByMovieID(int ID, CancellationToken ct = default(CancellationToken))
+    public async Task<FavoriteViewModel> GetFavoriteByIDAsync(int ID, CancellationToken ct = default(CancellationToken))
     {
-      FavoriteViewModel favoriteViewModel = FavoritesConverter.Convert(await _favoriteRepository.GetByMovieIDAsync(ID, ct));
+      FavoriteViewModel favorite = FavoritesConverter.Convert(await _favoriteRepository.GetByIDAsync(ID, ct));
 
-      return favoriteViewModel;
-    }
-
-    public async Task<FavoriteViewModel> GetFavoriteByUserID(int ID, CancellationToken ct = default(CancellationToken))
-    {
-      FavoriteViewModel favoriteViewModel = FavoritesConverter.Convert(await _favoriteRepository.GetByUserIDAsync(ID, ct));
-
-      return favoriteViewModel;
+      return favorite;
     }
 
     public async Task<FavoriteViewModel> AddFavoriteAsync(FavoriteViewModel FavoriteViewModel, CancellationToken ct = default(CancellationToken))
