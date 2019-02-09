@@ -44,12 +44,6 @@ namespace MoviesDataCore.Repositories
       return await _dbContext.Movies.FindAsync(ID);
     }
 
-    public async Task<Movie> GetByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken))
-    {
-      throw new System.NotImplementedException();
-      // return await _dbContext.Movies.Where(m => m.Posts.Where(p => p.PostID == ID));
-    }
-
     public void Dispose()
     {
       _dbContext.Dispose();

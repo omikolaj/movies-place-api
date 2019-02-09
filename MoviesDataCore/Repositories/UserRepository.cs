@@ -52,11 +52,6 @@ namespace MoviesDataCore.Repositories
       return await _dbContext.Users.FindAsync(ID);
     }
 
-    public async Task<User> GetByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken))
-    {
-      throw new System.NotImplementedException();
-    }
-
     public async Task<bool> UpdateAsync(User user, CancellationToken ct = default(CancellationToken))
     {
       if(!await UserExists(user.UserID, ct)) return false;

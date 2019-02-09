@@ -9,6 +9,8 @@ namespace MoviesDataCore.Configurations
     {
       model.HasKey(c => new { c.MovieID, c.UserID });
 
+      model.Property(f => f.Note);
+
       model.HasOne(f => f.User)
         .WithMany(u => u.Favorites)
         .HasForeignKey(f => f.UserID);

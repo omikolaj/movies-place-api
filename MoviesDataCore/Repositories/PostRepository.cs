@@ -44,7 +44,16 @@ namespace MoviesDataCore.Repositories
 
     public async Task<List<Post>> GetAllAsync(CancellationToken ct = default(CancellationToken))
     {
-      return await _dbContext.Posts.ToListAsync(ct);
+      return await _dbContext.Posts.Include(p => p.Comments)
+        .ThenInclude(c => c.User).Include(p => p.Movie).Include(p => p.User).ToListAsync(ct);
+      // foreach (Post post in posts)
+      // {
+      //     _dbContext.Entry(post)
+      //       .Collection(p => p.Comments)
+      //       .Load();
+      // }
+      
+        
     }
 
     public async Task<List<Post>> GetAllByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken))
