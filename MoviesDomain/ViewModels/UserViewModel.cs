@@ -8,7 +8,7 @@ namespace MoviesDomain.ViewModels
     public int UserID { get; set; }
     public string Username { get; set; }
     public string Email{ get; set; }
-    public int Password { get; set; }  
+    public string Password { get; set; }  
     public IList<CommentViewModel> Comments { get; set; }  
     public IList<PostViewModel> Posts { get; set; }
     public IList<FavoriteViewModel> Favorites { get; set; }

@@ -12,8 +12,6 @@ namespace MoviesDomain.Repositories
 
     Task<User> GetByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
-    Task<User> GetByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken));
-
     Task<User> AddAsync(User user, CancellationToken ct = default(CancellationToken));
 
     Task<bool> UpdateAsync(User user, CancellationToken ct = default(CancellationToken));

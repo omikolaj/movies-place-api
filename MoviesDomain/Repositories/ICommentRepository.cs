@@ -14,6 +14,8 @@ namespace MoviesDomain.Repositories
 
     Task<List<Comment>> GetAllByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
+    Task<List<Comment>> GetAllByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken));    
+
     Task<Comment> AddAsync(Comment newComment, CancellationToken ct = default(CancellationToken));
 
     Task<bool> UpdateAsync(Comment comment, CancellationToken ct = default(CancellationToken));

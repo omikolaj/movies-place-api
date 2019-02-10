@@ -14,6 +14,8 @@ namespace MoviesDomain.Supervisor
 
     Task<List<CommentViewModel>> GetAllCommentsByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
+    Task<List<CommentViewModel>> GetAllCommentsByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+
     Task<CommentViewModel> AddCommentAsync(CommentViewModel newCommentViewModel, CancellationToken ct = default(CancellationToken));
 
     Task<bool> UpdateCommentAsync(CommentViewModel commentViewModel, CancellationToken ct = default(CancellationToken));

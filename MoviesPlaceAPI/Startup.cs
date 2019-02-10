@@ -10,45 +10,48 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MoviesPlaceAPI.Configuration;
 using MoviesPlaceAPI.Configurations;
 
 namespace MoviesPlaceAPI
 {
-    public class Startup
+  public class Startup
+  {
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-          services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-          services.AddConnectionProvider(Configuration)
-            .ConfigureSupervisor()
-            .AddMiddleware()
-            .AddCorsConfiguration()
-            .ConfigureRepositories();
-
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseMvc();
-        }
+      Configuration = configuration;
     }
+
+    public IConfiguration Configuration { get; }
+
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public void ConfigureServices(IServiceCollection services)
+    {
+      services.AddMvc(opt => {
+          opt.UseCentralRoutePrefix(new RouteAttribute("api/v1"));
+        }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+      services.AddConnectionProvider(Configuration)
+        .ConfigureSupervisor()
+        .AddMiddleware()
+        .AddCorsConfiguration()
+        .ConfigureRepositories();
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
+      else
+      {
+        app.UseHsts();
+      }
+
+      app.UseHttpsRedirection();
+      app.UseMvc();
+    }
+  }
 }

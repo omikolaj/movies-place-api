@@ -14,19 +14,31 @@ namespace MoviesDomain.Converters
       postViewModel.PostDate = post.PostDate;
       postViewModel.PostID = post.PostID;
       postViewModel.UserID = post.UserID;
+      postViewModel.Title = post.Title;
+      postViewModel.Rating = post.Rating;
+      postViewModel.MovieID = post.MovieID;
+      postViewModel.Comments = CommentConverter.ConvertList(post.Comments);
+      postViewModel.User = UserConverter.Convert(post.User);
+      postViewModel.Movie = MovieConverter.Convert(post.Movie);
       
       return postViewModel;
     }
 
     public static List<PostViewModel> ConvertList(IEnumerable<Post> posts)
     {
-      return posts.Select(m => 
+      return posts.Select(p => 
       {
         PostViewModel postViewModel = new PostViewModel();
-        postViewModel.Description = m.Description;        
-        postViewModel.PostDate = m.PostDate;
-        postViewModel.PostID = m.PostID;
-        postViewModel.UserID = m.UserID;
+        postViewModel.Description = p.Description;        
+        postViewModel.MovieID = p.MovieID;
+        postViewModel.PostDate = p.PostDate;
+        postViewModel.PostID = p.PostID;
+        postViewModel.UserID = p.UserID;
+        postViewModel.Title = p.Title;
+        postViewModel.Rating = p.Rating;
+        postViewModel.Comments = CommentConverter.ConvertList(p.Comments);
+        postViewModel.User = UserConverter.Convert(p.User);
+        postViewModel.Movie = MovieConverter.Convert(p.Movie);
         return postViewModel;
       }).ToList();
     }

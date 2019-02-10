@@ -17,11 +17,12 @@ namespace MoviesDomain.Models
     public int PostID { get; set; }        
     public int UserID { get; set; }
     public User User { get; set; } 
-    [Required, StringLength(300, MinimumLength = 4)]
+    [Required, StringLength(100, MinimumLength = 4)]
     public string Title { get; set; }
-    [Required, StringLength(300)]
+    [Required]
     public string Description { get; set; }    
-    public RatingTypes Rating { get; set; }
+    [Required]
+    public int Rating { get; set; }
     public DateTime PostDate { get; set; }    
     public IEnumerable<Comment> Comments { get; set; }      
     public int MovieID { get; set; }

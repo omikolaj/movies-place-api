@@ -12,8 +12,8 @@ namespace MoviesDomain.Supervisor
   {
     public async Task<List<PostViewModel>> GetAllPostsAsync(CancellationToken ct = default(CancellationToken))
     {
-      List<PostViewModel> postsViewModel = PostConverter.ConvertList(await _postRepository.GetAllAsync(ct));
-
+      List<PostViewModel> postsViewModel = PostConverter.ConvertList(await _postRepository.GetAllAsync(ct));     
+           
       return postsViewModel;
     }
 

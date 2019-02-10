@@ -30,13 +30,14 @@ namespace MoviesDomain.Supervisor
 
         public async Task<UserViewModel> GetUserByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken))
         {
-            UserViewModel userViewModel = UserConverter.Convert(await _userRepository.GetByPostIDAsync(ID, ct));
+          int userID = _postRepository.GetByIDAsync(ID, ct).Result.UserID;
+          UserViewModel userViewModel = UserConverter.Convert(await _userRepository.GetByIDAsync(userID, ct));
 
-            userViewModel.Comments = await GetAllCommentsByUserIDAsync(userViewModel.UserID, ct);
-            userViewModel.Posts = await GetAllPostsByUserIDAsync(userViewModel.UserID, ct);
-            userViewModel.Favorites = await GetAllFavoritesByUserIDAsync(userViewModel.UserID, ct);
+          userViewModel.Comments = await GetAllCommentsByUserIDAsync(userViewModel.UserID, ct);
+          userViewModel.Posts = await GetAllPostsByUserIDAsync(userViewModel.UserID, ct);
+          userViewModel.Favorites = await GetAllFavoritesByUserIDAsync(userViewModel.UserID, ct);
             
-            return userViewModel;
+          return userViewModel;
         }
 
         public async Task<UserViewModel> AddUserAsync(UserViewModel userViewModel, CancellationToken ct = default(CancellationToken))

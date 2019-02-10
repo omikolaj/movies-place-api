@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
 
 namespace MoviesPlaceAPI
 {
@@ -19,6 +20,11 @@ namespace MoviesPlaceAPI
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureLogging((hostingContext, logging) => 
+                {
+                  // Filters logs by json file
+                  logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                });
     }
 }
