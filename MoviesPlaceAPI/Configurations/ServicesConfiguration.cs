@@ -42,7 +42,7 @@ namespace MoviesPlaceAPI.Configurations
       services.AddCors(options => 
       {
         options.AddPolicy("AllowAll", new Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder()
-                    .WithOrigins("http://localhost:4200")
+                    .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()

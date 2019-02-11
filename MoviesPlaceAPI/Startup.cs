@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GlobalErrorHandling.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,16 +11,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MoviesPlaceAPI.Configuration;
 using MoviesPlaceAPI.Configurations;
 
 namespace MoviesPlaceAPI
 {
   public class Startup
   {
-    public Startup(IConfiguration configuration)
+    private readonly ILogger _logger;
+    public Startup(IConfiguration configuration, ILogger<Startup> logger)
     {
       Configuration = configuration;
+      _logger = logger;
     }
 
     public IConfiguration Configuration { get; }
@@ -49,6 +51,8 @@ namespace MoviesPlaceAPI
       {
         app.UseHsts();
       }
+
+      app.ConfigureExceptionHandler(_logger);
 
       app.UseHttpsRedirection();
       app.UseMvc();

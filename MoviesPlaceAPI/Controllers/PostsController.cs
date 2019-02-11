@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MoviesDomain;
 using MoviesDomain.Supervisor;
 using MoviesDomain.ViewModels;
 
@@ -20,11 +21,13 @@ namespace MoviesPlaceAPI.Controllers
         _logger = logger;
       }
 
-        // GET api/posts
+        // GET api/v1/posts
         [HttpGet]
         [Produces(typeof(List<PostViewModel>))]
         public async Task<ActionResult<List<PostViewModel>>> Get(CancellationToken ct = default(CancellationToken))
         {
+          _logger.LogDebug(LoggingEvents.ListItems, "Fetching all posts");
+          
           return new JsonResult(await _moviesPlaceSupervisor.GetAllPostsAsync(ct));
         }
 
@@ -32,7 +35,7 @@ namespace MoviesPlaceAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return "value";
+            throw new Exception("Invalid ID");
         }
 
         // POST api/values

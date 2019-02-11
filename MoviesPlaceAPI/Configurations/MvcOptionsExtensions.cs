@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace MoviesPlaceAPI.Configuration
+namespace MoviesPlaceAPI.Configurations
 {
   public static class MvcOptionsExtensions
   {
