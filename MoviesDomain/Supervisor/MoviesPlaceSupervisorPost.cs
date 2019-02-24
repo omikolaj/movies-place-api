@@ -29,7 +29,7 @@ namespace MoviesDomain.Supervisor
     public async Task<List<PostViewModel>> GetAllPostsByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken))
     {
       List<PostViewModel> postsViewModel = PostConverter.ConvertList(await _postRepository.GetAllByUserIDAsync(ID, ct));
-      postsViewModel.Select(async p => 
+      postsViewModel?.Select(async p => 
       {
         p.Movie = await GetMovieByIDAsync(p.MovieID, ct);
         p.User = await GetUserByIDAsync(p.UserID, ct);

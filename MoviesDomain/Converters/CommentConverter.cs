@@ -20,7 +20,7 @@ namespace MoviesDomain.Converters
 
     public static List<CommentViewModel> ConvertList(IEnumerable<Comment> comments)
     {
-      return comments.Select(c =>
+      return comments?.Select(c =>
       {
         CommentViewModel comment = new CommentViewModel();
         comment.CommentID = c.CommentID;

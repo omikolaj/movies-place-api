@@ -8,7 +8,7 @@ namespace MoviesDomain.ViewModels
 {
   public class PostViewModel
   {
-    public int PostID { get; set; }   
+    public int? PostID { get; set; }   
     public int UserID { get; set; }   
     public string Username { get; set; } 
     public UserViewModel User { get; set; }

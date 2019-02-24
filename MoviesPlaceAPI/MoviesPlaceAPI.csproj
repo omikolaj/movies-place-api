@@ -8,7 +8,8 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
-  <ItemGroup>    
+  <ItemGroup>        
+    <PackageReference Include="AspNetCore.RouteAnalyzer" Version="0.5.3" />        
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.2" />    
     <PackageReference Include="Microsoft.AspNetCore.App" />

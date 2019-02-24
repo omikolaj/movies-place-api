@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCore.RouteAnalyzer;
 using GlobalErrorHandling.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,10 +40,12 @@ namespace MoviesPlaceAPI
         .AddMiddleware()
         .AddCorsConfiguration()
         .ConfigureRepositories();
+
+      services.AddRouteAnalyzer();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime, IRouteAnalyzer routeAnalyzer)
     {
       if (env.IsDevelopment())
       {
@@ -55,7 +59,20 @@ namespace MoviesPlaceAPI
       app.ConfigureExceptionHandler(_logger);
 
       app.UseHttpsRedirection();
+
       app.UseMvc();
+
+      applicationLifetime.ApplicationStarted.Register(() =>
+      {
+        var infos = routeAnalyzer.GetAllRouteInformations();
+        Debug.WriteLine("======== ALL ROUTE INFORMATION ========");
+        foreach (var info in infos)
+        {
+          Debug.WriteLine(info.ToString());
+        }
+        Debug.WriteLine("");
+        Debug.WriteLine("");
+      });
     }
   }
 }

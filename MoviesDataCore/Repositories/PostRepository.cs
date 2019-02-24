@@ -18,7 +18,7 @@ namespace MoviesDataCore.Repositories
 
     #region Private Methods
 
-    private async Task<bool> PostExists(int ID, CancellationToken ct = default(CancellationToken))
+    private async Task<bool> PostExists(int? ID, CancellationToken ct = default(CancellationToken))
     {
       return await GetByIDAsync(ID, ct) != null;
     }
@@ -61,7 +61,7 @@ namespace MoviesDataCore.Repositories
       return await _dbContext.Posts.Where(p => p.UserID == ID).ToListAsync(ct);
     }
 
-    public async Task<Post> GetByIDAsync(int ID, CancellationToken ct = default(CancellationToken))
+    public async Task<Post> GetByIDAsync(int? ID, CancellationToken ct = default(CancellationToken))
     {
       return await _dbContext.Posts.FindAsync(ID);
     }

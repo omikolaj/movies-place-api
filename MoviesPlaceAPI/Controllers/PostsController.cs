@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MoviesDomain;
+using MoviesDomain.Models;
 using MoviesDomain.Supervisor;
 using MoviesDomain.ViewModels;
 
@@ -26,8 +27,8 @@ namespace MoviesPlaceAPI.Controllers
         [Produces(typeof(List<PostViewModel>))]
         public async Task<ActionResult<List<PostViewModel>>> Get(CancellationToken ct = default(CancellationToken))
         {
-          _logger.LogDebug(LoggingEvents.ListItems, "Fetching all posts");
-          
+          _logger.LogDebug(LoggingEvents.ListItems, "Fetching all posts");          
+
           return new JsonResult(await _moviesPlaceSupervisor.GetAllPostsAsync(ct));
         }
 
@@ -40,8 +41,10 @@ namespace MoviesPlaceAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<PostViewModel>> Post([FromBody]PostViewModel post)
         {
+          
+          return new JsonResult(await _moviesPlaceSupervisor.AddPostAsync(post));
         }
 
         // PUT api/values/5
