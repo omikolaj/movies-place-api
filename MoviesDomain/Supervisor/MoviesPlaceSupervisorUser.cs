@@ -30,7 +30,7 @@ namespace MoviesDomain.Supervisor
 
         public async Task<UserViewModel> GetUserByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken))
         {
-          int userID = _postRepository.GetByIDAsync(ID, ct).Result.UserID;
+          int userID = int.Parse(_postRepository.GetByIDAsync(ID, ct).Result.UserID);
           UserViewModel userViewModel = UserConverter.Convert(await _userRepository.GetByIDAsync(userID, ct));
 
           userViewModel.Comments = await GetAllCommentsByUserIDAsync(userViewModel.UserID, ct);
@@ -44,13 +44,13 @@ namespace MoviesDomain.Supervisor
         {
             User user = new User()
             {
-                Username = userViewModel.Username,
+                UserName = userViewModel.Username,
                 Email = userViewModel.Email,
-                Password = userViewModel.Password                
+                PasswordHash = userViewModel.Password                
             };
 
             user = await _userRepository.AddAsync(user, ct);
-            userViewModel.UserID = user.UserID;
+            userViewModel.UserID = int.Parse(user.Id);
 
             return userViewModel;
         }
@@ -59,8 +59,8 @@ namespace MoviesDomain.Supervisor
         {
             User user = await _userRepository.GetByIDAsync(userViewModel.UserID, ct);
 
-            user.Password = userViewModel.Password;
-            user.Username = userViewModel.Username;
+            user.PasswordHash = userViewModel.Password;
+            user.UserName = userViewModel.Username;
             user.Email = userViewModel.Email;
 
             return await _userRepository.UpdateAsync(user, ct);

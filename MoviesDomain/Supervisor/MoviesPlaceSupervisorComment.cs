@@ -43,7 +43,7 @@ namespace MoviesDomain.Supervisor
       {
         Content = newCommentViewModel.Content,        
         PostID = newCommentViewModel.PostID,
-        UserID = newCommentViewModel.UserID
+        UserID = newCommentViewModel.UserID.ToString()
       };
 
       comment = await _commentRepository.AddAsync(comment, ct);
@@ -61,7 +61,7 @@ namespace MoviesDomain.Supervisor
       comment.CommentID = commentViewModel.CommentID;
       comment.Content = commentViewModel.Content;
       comment.PostID = commentViewModel.PostID;
-      comment.UserID = commentViewModel.UserID;
+      comment.UserID = commentViewModel.UserID.ToString();
 
       return await _commentRepository.UpdateAsync(comment, ct);
     }

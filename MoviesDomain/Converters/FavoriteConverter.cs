@@ -11,7 +11,7 @@ namespace MoviesDomain.Converters
     {
       FavoriteViewModel favoriteViewModel = new FavoriteViewModel();
       favoriteViewModel.FavoriteID = favorite.FavoriteID;
-      favoriteViewModel.UserID = favorite.UserID;
+      favoriteViewModel.UserID = int.Parse(favorite.UserID);
       favoriteViewModel.MovieID = favorite.MovieID;
       favoriteViewModel.Note = favorite.Note;
 
@@ -24,7 +24,7 @@ namespace MoviesDomain.Converters
       {
         FavoriteViewModel favoriteViewModel = new FavoriteViewModel();
         favoriteViewModel.FavoriteID = f.FavoriteID;
-        favoriteViewModel.UserID = f.UserID;
+        favoriteViewModel.UserID = int.Parse(f.UserID);
         favoriteViewModel.MovieID = f.MovieID;
         favoriteViewModel.Note = f.Note;
         return favoriteViewModel;

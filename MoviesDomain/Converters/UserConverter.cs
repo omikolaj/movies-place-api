@@ -10,9 +10,9 @@ namespace MoviesDomain.Converters
     public static UserViewModel Convert(User user)
     {
       UserViewModel userViewModel = new UserViewModel();
-      userViewModel.UserID = user.UserID;
-      userViewModel.Username = user.Username;
-      userViewModel.Password = user.Password;
+      userViewModel.UserID = int.Parse(user.Id);
+      userViewModel.Username = user.UserName;
+      userViewModel.Password = user.PasswordHash;
       userViewModel.Email = user.Email;
       
       return userViewModel;
@@ -23,9 +23,9 @@ namespace MoviesDomain.Converters
       return users.Select(u =>
       {
         UserViewModel userViewModel = new UserViewModel();
-        userViewModel.UserID = u.UserID;
-        userViewModel.Username = u.Username;
-        userViewModel.Password = u.Password;
+        userViewModel.UserID = int.Parse(u.Id);
+        userViewModel.Username = u.UserName;
+        userViewModel.Password = u.PasswordHash;
         userViewModel.Email = u.Email;
 
         return userViewModel;

@@ -35,7 +35,7 @@ namespace MoviesDomain.Supervisor
       Favorite favorites = new Favorite()
       {
         MovieID = FavoriteViewModel.MovieID,
-        UserID = FavoriteViewModel.UserID,
+        UserID = FavoriteViewModel.UserID.ToString(),
         Note = FavoriteViewModel.Note
       };
 

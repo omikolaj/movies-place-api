@@ -13,7 +13,7 @@ namespace MoviesDomain.Converters
       commentViewModel.CommentID = comment.CommentID;      
       commentViewModel.Content = comment.Content;
       commentViewModel.PostID = comment.PostID;
-      commentViewModel.UserID = comment.UserID;
+      commentViewModel.UserID = int.Parse(comment.UserID);
       commentViewModel.User = UserConverter.Convert(comment.User);
       return commentViewModel;
     }
@@ -26,8 +26,8 @@ namespace MoviesDomain.Converters
         comment.CommentID = c.CommentID;
         comment.Content = c.Content;
         comment.PostID = c.PostID;
-        comment.UserID = c.UserID;
-        comment.Username = c.User.Username;        
+        comment.UserID = int.Parse(c.UserID);
+        comment.Username = c.User.UserName;        
         return comment;
       }).ToList();
     }

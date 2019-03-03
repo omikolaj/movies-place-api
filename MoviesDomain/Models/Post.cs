@@ -15,7 +15,7 @@ namespace MoviesDomain.Models
       Excellent = 5
     }
     public int? PostID { get; set; }        
-    public int UserID { get; set; }
+    public string UserID { get; set; }
     public User User { get; set; } 
     [Required, StringLength(100, MinimumLength = 4)]
     public string Title { get; set; }

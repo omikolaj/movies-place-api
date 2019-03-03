@@ -47,7 +47,7 @@ namespace MoviesDomain.Supervisor
         MovieID = postViewModel.MovieID,
         PostDate = new System.DateTime(),
         Rating = postViewModel.Rating, 
-        UserID = postViewModel.UserID       
+        UserID = postViewModel.UserID.ToString()       
       };
       post = await _postRepository.AddAsync(post, ct);
       postViewModel.PostID = post.PostID;

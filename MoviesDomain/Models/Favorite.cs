@@ -8,7 +8,7 @@ namespace MoviesDomain.Models
     public int FavoriteID { get; set; }
     public string Note { get; set; }
     [Display(Name = "UserID")]
-    public int UserID { get; set; }
+    public string UserID { get; set; }
     [Display(Name = "MovieID")]
     public int MovieID { get; set; }    
     public Movie Movie { get; set; }

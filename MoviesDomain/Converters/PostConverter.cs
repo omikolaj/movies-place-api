@@ -13,7 +13,7 @@ namespace MoviesDomain.Converters
       postViewModel.Description = post.Description;      
       postViewModel.PostDate = post.PostDate;
       postViewModel.PostID = post.PostID;
-      postViewModel.UserID = post.UserID;
+      postViewModel.UserID = int.Parse(post.UserID);
       postViewModel.Title = post.Title;
       postViewModel.Rating = post.Rating;
       postViewModel.MovieID = post.MovieID;
@@ -33,7 +33,7 @@ namespace MoviesDomain.Converters
         postViewModel.MovieID = p.MovieID;
         postViewModel.PostDate = p.PostDate;
         postViewModel.PostID = p.PostID;
-        postViewModel.UserID = p.UserID;
+        postViewModel.UserID = int.Parse(p.UserID);
         postViewModel.Title = p.Title;
         postViewModel.Rating = p.Rating;
         postViewModel.Comments = CommentConverter.ConvertList(p.Comments);
