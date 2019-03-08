@@ -49,7 +49,7 @@ namespace MoviesDataCore.Repositories
 
     public async Task<List<Comment>> GetAllByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken))
     {
-      return await _dbContext.Comments.Where(c => c.UserID == ID).ToListAsync(ct);
+      return await _dbContext.Comments.Where(c => int.Parse(c.UserID) == ID).ToListAsync(ct);
     }
 
     public async Task<List<Comment>> GetAllByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken))

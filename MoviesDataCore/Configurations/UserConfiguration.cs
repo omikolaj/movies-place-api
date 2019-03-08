@@ -7,26 +7,26 @@ namespace MoviesDataCore.Configurations
   {
     public UserConfiguration(EntityTypeBuilder<User> model)    
     {
-      model.HasKey(u => u.UserID);
+      // model.HasKey(u => u.Id);
 
-      model.Property(u => u.Username);
+      // model.Property(u => u.UserName);
 
-      model.Property(u => u.Email);
+      // model.Property(u => u.Email);
 
-      model.Property(u => u.Password);
+      // model.Property(u => u.PasswordHash);
 
       model.HasData(new User()
       { 
-        UserID = 1,
-        Username = "scatman",
+        Id = "1",
+        UserName = "scatman",
         Email = "scotty@gmail.com",
-        Password = "*****",        
+        PasswordHash = "password",        
       }, new User()
       {
-        UserID = 2,
-        Username = "gatesman",
+        Id = "2",
+        UserName = "gatesman",
         Email = "levi@gmail.com",
-        Password = "*****",  
+        PasswordHash = "password",  
       });
     }
   }

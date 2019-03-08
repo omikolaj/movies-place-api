@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MoviesDomain;
@@ -24,6 +25,7 @@ namespace MoviesPlaceAPI.Controllers
 
         // GET api/v1/posts
         [HttpGet]
+        [Authorize]
         [Produces(typeof(List<PostViewModel>))]
         public async Task<ActionResult<List<PostViewModel>>> Get(CancellationToken ct = default(CancellationToken))
         {
@@ -42,8 +44,7 @@ namespace MoviesPlaceAPI.Controllers
         // POST api/values
         [HttpPost]
         public async Task<ActionResult<PostViewModel>> Post([FromBody]PostViewModel post)
-        {
-          
+        {          
           return new JsonResult(await _moviesPlaceSupervisor.AddPostAsync(post));
         }
 

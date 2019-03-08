@@ -15,6 +15,8 @@ namespace MoviesPlaceAPI.Configurations
       //Adds the MoviesPlaceContext to the DI container
       services.AddDbContextPool<MoviesPlaceContext>(options => options.UseNpgsql(connection));
 
+      //services.AddDbContextPool<MoviesPlaceIdentityContext>(options => options.UseNpgsql(connection));
+
       //Adding connection info to DI incase needed later
       services.AddSingleton(new DbInfo(connection));
 

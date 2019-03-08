@@ -30,7 +30,7 @@ namespace MoviesDataCore.Configurations
       model.HasData(new Post(){
         PostID = 1,
         PostDate = DateTime.Now,
-        UserID = 1,
+        UserID = "1",
         MovieID = 1,
         Title = "I really liked watching her laugh",
         Description = "Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.",

@@ -12,5 +12,6 @@ namespace MoviesPlaceAPI.Controllers
     {
         _moviesPlaceSupervisor = moviesPlaceSupervisor;
     }
+    
   }
 }

@@ -54,7 +54,7 @@ namespace MoviesDataCore.Repositories
 
     public async Task<bool> UpdateAsync(User user, CancellationToken ct = default(CancellationToken))
     {
-      if(!await UserExists(user.UserID, ct)) return false;
+      if(!await UserExists(int.Parse(user.Id), ct)) return false;
 
       _dbContext.Users.Update(user);
       await _dbContext.SaveChangesAsync(ct);
