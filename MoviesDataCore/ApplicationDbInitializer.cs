@@ -5,6 +5,7 @@ using MoviesDomain.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace MoviesDataCore
 {
@@ -19,7 +20,22 @@ namespace MoviesDataCore
       { 
         if(!roleManager.Roles.Any(r => r.Name == role))
         {
-          await roleManager.CreateAsync(new IdentityRole {Name = role, NormalizedName = role.ToUpper()});
+          var newRole = new IdentityRole {Name = role, NormalizedName = role.ToUpper()};          
+          await roleManager.CreateAsync(newRole);
+          if(role == "SuperUser"){
+            await roleManager.AddClaimAsync(newRole, new Claim("permission", "ViewPosts"));
+            await roleManager.AddClaimAsync(newRole, new Claim("permission", "CreatePosts"));
+            await roleManager.AddClaimAsync(newRole, new Claim("permission", "EditPosts"));
+            await roleManager.AddClaimAsync(newRole, new Claim("permission", "DeletePosts"));
+          }
+          else if(role == "Admin"){
+            await roleManager.AddClaimAsync(newRole, new Claim("permission", "ViewPosts"));
+            await roleManager.AddClaimAsync(newRole, new Claim("permission", "CreatePosts"));
+            await roleManager.AddClaimAsync(newRole, new Claim("permission", "EditPosts"));
+          }
+          else if(role == "User"){
+            await roleManager.AddClaimAsync(newRole, new Claim("permission", "ViewPosts"));
+          }
         }
       }
 
