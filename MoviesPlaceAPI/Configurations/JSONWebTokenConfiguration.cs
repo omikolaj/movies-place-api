@@ -1,11 +1,16 @@
 using System;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MoviesDomain.Models;
 using MoviesPlaceAPI.Auth;
+using MoviesPlaceAPI.Auth.JwtTokenProvider;
 
 namespace MoviesPlaceAPI.Configurations
 {
@@ -43,23 +48,25 @@ namespace MoviesPlaceAPI.Configurations
         ClockSkew = TimeSpan.Zero
       };
 
-      services.AddAuthentication(options =>
-      { 
+      services.AddAuthentication(options => {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        
       })
       .AddJwtBearer(configureOptions =>
       {
         configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
         configureOptions.TokenValidationParameters = tokenValidationParameters;
-        configureOptions.SaveToken = true;
+        configureOptions.SaveToken = true;        
       });
 
       // api user claim policy
       services.AddAuthorization(options =>
       {
-        options.AddPolicy("AdminPolicy", policy => policy.RequireClaim("Role", "Admin"));
+        options.AddPolicy("AdminPolicy", policy => {
+          policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Role, "Admin");
+          // Runs only against the identity created by the "Bearer" handler
+          policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+        });
       });
 
       return services;

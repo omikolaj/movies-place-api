@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MoviesDomain.Models;
 using MoviesPlaceAPI.Auth;
+using System.Linq;
 
 namespace MoviesPlaceAPI.Auth
 {
@@ -23,13 +24,21 @@ namespace MoviesPlaceAPI.Auth
 
     public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
     {
-      var claims = new[]
-   {
+      List<Claim> permissions = new List<Claim>();
+      permissions.AddRange(identity.Claims.Select(claim => claim).Where(c => c.Type == Constants.Strings.JwtClaimIdentifiers.Permission));
+      List<Claim> roles = new List<Claim>();
+      roles.AddRange(identity.Claims.Select(claim => claim).Where(c => c.Type == Constants.Strings.JwtClaimIdentifiers.Role));
+
+      var claims = new List<Claim>
+      {
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
-                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                 identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.Role),
-                 identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.Id)
+                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),                 
+                 identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.Id),
+                 identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.UserName)
              };
+      
+      claims.AddRange(permissions);
+      claims.AddRange(roles);
 
       // Create the JWT security token and encode it.
       var jwt = new JwtSecurityToken(
@@ -44,40 +53,6 @@ namespace MoviesPlaceAPI.Auth
 
       return encodedJwt;
     }
-
-    // public ClaimsIdentity GenerateClaimsIdentity(User user)
-    // {
-    //   return new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"), new[]
-    //   {
-    //       new Claim(Constants.Strings.JwtClaimIdentifiers.Id, user.Id),
-    //       new Claim(Constants.Strings.JwtClaimIdentifiers.Role, Constants.Strings.JwtClaims.ApiAccess)
-    //   });
-
-    //   IdentityOptions _options = new IdentityOptions();
-    //   var claims = new List<Claim>        
-    //       { 
-    //         new Claim(_options.ClaimsIdentity.UserIdClaimType, user.Id.ToString()),
-    //         new Claim(_options.ClaimsIdentity.UserNameClaimType, user.UserName)
-    //       };
-
-    //   // var userClaims = await _userManager.GetClaimsAsync(user);
-    //   // var userRoles = await _userManager.GetRolesAsync(user);
-    //   // claims.AddRange(userClaims);
-    //   // foreach (var userRole in userRoles)
-    //   // {
-    //   //   claims.Add(new Claim(ClaimTypes.Role, userRole));
-    //   //   var role = await _roleManager.FindByNameAsync(userRole);
-    //   //   if (role != null)
-    //   //   {
-    //   //     var roleClaims = await _roleManager.GetClaimsAsync(role);
-    //   //     foreach (Claim roleClaim in roleClaims)
-    //   //     {
-    //   //       claims.Add(roleClaim);
-    //   //     }
-    //   //   }
-    //   // }
-    //   // return claims;
-    // }
 
     private static long ToUnixEpochDate(DateTime date)
       => (long)Math.Round((date.ToUniversalTime() -

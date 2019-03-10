@@ -16,10 +16,9 @@ namespace MoviesPlaceAPI.Auth
                                                     JsonSerializerSettings serializerSettings)
       {
 
-        IdentityOptions options = new IdentityOptions();
         var response = new
         {
-          id = identity.Claims.Single(c => c.Type == options.ClaimsIdentity.UserIdClaimType).Value,
+          id = identity.Claims.Single(c => c.Type == Constants.Strings.JwtClaimIdentifiers.Id).Value,
           token = await jwtFactory.GenerateEncodedToken(userName, identity),
           expires_in = (int)jwtOptions.ValidFor.TotalSeconds
         };

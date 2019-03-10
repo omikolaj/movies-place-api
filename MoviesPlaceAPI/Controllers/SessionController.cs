@@ -5,6 +5,8 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -48,8 +50,6 @@ namespace MoviesPlaceAPI.Controllers
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] LoginViewModel userLogin, CancellationToken ct = default(CancellationToken))
     {
-      
-
       if(!ModelState.IsValid)
       {
         return BadRequest(ModelState);
@@ -70,6 +70,15 @@ namespace MoviesPlaceAPI.Controllers
                           new JsonSerializerSettings { 
                             Formatting = Formatting.Indented 
                         });
+
+      Response.Cookies.Append(
+        "token",
+        jwt,
+        new Microsoft.AspNetCore.Http.CookieOptions(){
+          HttpOnly = true,
+          SameSite = SameSiteMode.Strict
+        }
+      );
       
       return new OkObjectResult(jwt);
 
@@ -103,8 +112,8 @@ namespace MoviesPlaceAPI.Controllers
       // Create claims List
       var claims =  new List<Claim>()
       {
-        new Claim(options.ClaimsIdentity.UserIdClaimType, user.Id),
-        new Claim(options.ClaimsIdentity.UserNameClaimType, user.UserName)
+        new Claim(Constants.Strings.JwtClaimIdentifiers.Id, user.Id),
+        new Claim(Constants.Strings.JwtClaimIdentifiers.UserName, user.UserName)
       };
 
       // Retrieve user claims
@@ -114,7 +123,7 @@ namespace MoviesPlaceAPI.Controllers
 
       claims.AddRange(userClaims);
       foreach(var userRole in userRoles){
-        claims.Add(new Claim(ClaimTypes.Role, userRole));
+        claims.Add(new Claim(Constants.Strings.JwtClaimIdentifiers.Role, userRole));
         var role = await _roleManager.FindByNameAsync(userRole);
         if(role != null){
           var roleClaims = await _roleManager.GetClaimsAsync(role);

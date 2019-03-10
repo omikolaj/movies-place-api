@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MiddlewareSample;
 using MoviesDataCore;
 using MoviesDomain.Models;
 using MoviesPlaceAPI.Configurations;
@@ -105,6 +106,8 @@ namespace MoviesPlaceAPI
       {
         app.UseHsts();
       }
+
+      app.UseMiddleware<JWTInHeaderMiddleware>();
 
       app.ConfigureExceptionHandler(_logger);
 
