@@ -47,9 +47,9 @@ namespace MoviesDataCore.Repositories
       return await _dbContext.Favorites.Where(f => f.MovieID == ID).ToListAsync(ct);
     }
 
-    public async Task<List<Favorite>> GetAllByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken))
+    public async Task<List<Favorite>> GetAllByUserIDAsync(string ID, CancellationToken ct = default(CancellationToken))
     {
-      return await _dbContext.Favorites.Where(f => int.Parse(f.UserID) == ID).ToListAsync(ct);
+      return await _dbContext.Favorites.Where(f => f.UserID == ID).ToListAsync(ct);
     }
 
     public async Task<Favorite> GetByIDAsync(int ID, CancellationToken ct = default(CancellationToken))

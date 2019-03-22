@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -20,5 +21,10 @@ namespace MoviesPlaceAPI.Auth
                 modelState.TryAddModelError(code, description);
                 return modelState;
             }
-        }
+
+    internal static object AddErrorToModelState(string v1, string v2)
+    {
+      throw new NotImplementedException();
+    }
+  }
     }

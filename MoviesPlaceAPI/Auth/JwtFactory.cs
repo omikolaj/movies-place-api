@@ -32,9 +32,10 @@ namespace MoviesPlaceAPI.Auth
       var claims = new List<Claim>
       {
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
-                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),                 
+                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
+                 new Claim(ClaimTypes.Name, userName),         
                  identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.Id),
-                 identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.UserName)
+                //  identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.UserName)
              };
       
       claims.AddRange(permissions);

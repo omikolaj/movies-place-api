@@ -18,7 +18,7 @@ namespace MoviesDataCore.Repositories
 
     #region Private Methods
 
-    private async Task<bool> UserExists(int ID, CancellationToken ct = default(CancellationToken))
+    private async Task<bool> UserExists(string ID, CancellationToken ct = default(CancellationToken))
     {
       return await GetByIDAsync(ID, ct) != null;
     }
@@ -32,7 +32,7 @@ namespace MoviesDataCore.Repositories
       return newUser;
     }
 
-    public async Task<bool> DeleteAsync(int ID, CancellationToken ct = default(CancellationToken))
+    public async Task<bool> DeleteAsync(string ID, CancellationToken ct = default(CancellationToken))
     {
       if(!await UserExists(ID, ct)) return false;
 
@@ -47,19 +47,20 @@ namespace MoviesDataCore.Repositories
       return await _dbContext.Users.ToListAsync(ct);
     }
 
-    public async Task<User> GetByIDAsync(int ID, CancellationToken ct = default(CancellationToken))
+    public async Task<User> GetByIDAsync(string ID, CancellationToken ct = default(CancellationToken))
     {
       return await _dbContext.Users.FindAsync(ID);
     }
 
     public async Task<bool> UpdateAsync(User user, CancellationToken ct = default(CancellationToken))
     {
-      if(!await UserExists(int.Parse(user.Id), ct)) return false;
+      if(!await UserExists(user.Id, ct)) return false;
 
       _dbContext.Users.Update(user);
       await _dbContext.SaveChangesAsync(ct);
       return true;
     }
+
     public void Dispose()
     {
       _dbContext.Dispose();

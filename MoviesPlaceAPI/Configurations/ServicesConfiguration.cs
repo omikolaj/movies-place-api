@@ -14,7 +14,8 @@ namespace MoviesPlaceAPI.Configurations
               .AddScoped<IFavoriteRepository, FavoriteRepository>()
               .AddScoped<IMovieRepository, MovieRepository>()
               .AddScoped<IPostRepository, PostRepository>()
-              .AddScoped<IUserRepository, UserRepository>();
+              .AddScoped<IUserRepository, UserRepository>()
+              .AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
       return services;
     }

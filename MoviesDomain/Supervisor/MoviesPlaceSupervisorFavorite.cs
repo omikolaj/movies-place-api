@@ -9,7 +9,7 @@ namespace MoviesDomain.Supervisor
 {
   public partial class MoviesPlaceSupervisor : IMoviesPlaceSupervisor 
   {
-    public async Task<List<FavoriteViewModel>> GetAllFavoritesByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken))
+    public async Task<List<FavoriteViewModel>> GetAllFavoritesByUserIDAsync(string ID, CancellationToken ct = default(CancellationToken))
     {
       List<FavoriteViewModel> favorites = FavoritesConverter.ConvertList(await _favoriteRepository.GetAllByUserIDAsync(ID, ct));
 

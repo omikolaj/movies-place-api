@@ -233,11 +233,30 @@ namespace MoviesDataCore.Migrations
                             PostID = 1,
                             Description = "Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.",
                             MovieID = 1,
-                            PostDate = new DateTime(2019, 3, 8, 10, 6, 44, 862, DateTimeKind.Local).AddTicks(1701),
+                            PostDate = new DateTime(2019, 3, 17, 13, 41, 31, 54, DateTimeKind.Local).AddTicks(5000),
                             Rating = 4,
                             Title = "I really liked watching her laugh",
                             UserID = "1"
                         });
+                });
+
+            modelBuilder.Entity("MoviesDomain.Models.RefreshToken", b =>
+                {
+                    b.Property<string>("RefreshTokenID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Expires");
+
+                    b.Property<string>("Token");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("RefreshTokenID");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("MoviesDomain.Models.User", b =>
@@ -294,7 +313,7 @@ namespace MoviesDataCore.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "eb2504c7-2b51-485c-8dbb-fd5c316b2383",
+                            ConcurrencyStamp = "8656131e-7485-4cbc-9376-6cf2ce6e6042",
                             Email = "scotty@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -307,7 +326,7 @@ namespace MoviesDataCore.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "99067d81-000f-46fa-a29d-1a90bf62bb32",
+                            ConcurrencyStamp = "7b7579ea-4cc7-4d35-bf8b-39e9e8121f79",
                             Email = "levi@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -400,6 +419,13 @@ namespace MoviesDataCore.Migrations
                         .WithMany("Posts")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MoviesDomain.Models.RefreshToken", b =>
+                {
+                    b.HasOne("MoviesDomain.Models.User", "User")
+                        .WithOne("RefreshToken")
+                        .HasForeignKey("MoviesDomain.Models.RefreshToken", "UserId");
                 });
 #pragma warning restore 612, 618
         }

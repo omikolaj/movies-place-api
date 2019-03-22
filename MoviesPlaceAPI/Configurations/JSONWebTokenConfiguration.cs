@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -10,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MoviesDomain.Models;
 using MoviesPlaceAPI.Auth;
-using MoviesPlaceAPI.Auth.JwtTokenProvider;
 
 namespace MoviesPlaceAPI.Configurations
 {
@@ -19,11 +19,11 @@ namespace MoviesPlaceAPI.Configurations
     public static IServiceCollection ConfigureJsonWebToken(this IServiceCollection services, IConfiguration configuration)
     {
       services.AddSingleton<IJwtFactory, JwtFactory>();
-
-      string privateKey = "PrivateKeyJSONWebTokenConfigurationPrivateKeyJSONWebTokenConfigurationPrivateKeyJSONWebTokenConfigurationPrivateKeyJSONWebTokenConfiguration";
-      SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(privateKey));
-
       var jwtAppSettingOptions = configuration.GetSection(nameof(JwtIssuerOptions));
+
+      string privateKey = jwtAppSettingOptions[nameof(JwtIssuerOptions.SigningKey)];
+      SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(privateKey));
+      
       services.Configure<JwtIssuerOptions>(options =>
       {
         options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
@@ -43,7 +43,7 @@ namespace MoviesPlaceAPI.Configurations
         IssuerSigningKey = signingKey,
 
         RequireSignedTokens = true,
-        RequireExpirationTime = false,
+        RequireExpirationTime = true,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
       };
@@ -56,7 +56,19 @@ namespace MoviesPlaceAPI.Configurations
       {
         configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
         configureOptions.TokenValidationParameters = tokenValidationParameters;
-        configureOptions.SaveToken = true;        
+        configureOptions.SaveToken = true;
+        // In case of having an expired token
+        configureOptions.Events = new JwtBearerEvents
+        {
+          OnAuthenticationFailed = context => 
+          {
+            if(context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            {
+             context.Response.Headers.Add("Token-Expired", "true");
+            }
+            return Task.CompletedTask;
+          }
+        };      
       });
 
       // api user claim policy

@@ -22,7 +22,6 @@ namespace MiddlewareSample
            {
                var token = JsonConvert.DeserializeObject<AccessToken>(cookie);
                context.Request.Headers.Append("Authorization", "Bearer " + token.token);
-               
            }
 
            await _next.Invoke(context);

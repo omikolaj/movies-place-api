@@ -23,7 +23,7 @@ namespace MoviesDomain.Supervisor
       return comment;
     }
 
-    public async Task<List<CommentViewModel>> GetAllCommentsByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken))
+    public async Task<List<CommentViewModel>> GetAllCommentsByUserIDAsync(string ID, CancellationToken ct = default(CancellationToken))
     {
       List<CommentViewModel> comments = CommentConverter.ConvertList(await _commentRepository.GetAllByUserIDAsync(ID, ct));
 

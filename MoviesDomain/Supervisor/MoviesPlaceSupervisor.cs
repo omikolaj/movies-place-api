@@ -9,17 +9,19 @@ namespace MoviesDomain.Supervisor
     private readonly IMovieRepository _movieRepository;
     private readonly IPostRepository _postRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IRefreshTokenRepository _tokenRepository;
 
-    public MoviesPlaceSupervisor()
-    {
+    // public MoviesPlaceSupervisor()
+    // {
         
-    }
+    // }
 
     public MoviesPlaceSupervisor(ICommentRepository commentRepository,
         IFavoriteRepository favoriteRepository,
         IMovieRepository movieRepository,
         IPostRepository postRepository,
-        IUserRepository userRepository
+        IUserRepository userRepository,
+        IRefreshTokenRepository tokenRepository
     )
     {
         _commentRepository = commentRepository;
@@ -27,6 +29,7 @@ namespace MoviesDomain.Supervisor
         _movieRepository = movieRepository;
         _postRepository = postRepository;
         _userRepository = userRepository;
+        _tokenRepository = tokenRepository;
     }
 
   }

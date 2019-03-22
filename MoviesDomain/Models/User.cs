@@ -12,7 +12,9 @@ namespace MoviesDomain.Models
     // [Required, EmailAddress]
     // public string Email{ get; set; }
     // [Required, DataType(DataType.Password)]
-    // public string Password { get; set; }      
+    // public string Password { get; set; }     
+    // public int? RefreshTokenID { get; set; } 
+    public RefreshToken RefreshToken { get; set; }
     public IEnumerable<Comment> Comments { get; set; }      
     public IEnumerable<Post> Posts { get; set; }    
     public IEnumerable<Favorite> Favorites { get; set; }

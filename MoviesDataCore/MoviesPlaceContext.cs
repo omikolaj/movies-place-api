@@ -15,6 +15,7 @@ namespace MoviesDataCore
     public DbSet<Favorite> Favorites { get; set; }
     public DbSet<Movie> Movies { get; set; }    
     public DbSet<Post> Posts { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,6 +25,7 @@ namespace MoviesDataCore
       new PostConfiguration(modelBuilder.Entity<Post>());
       new UserConfiguration(modelBuilder.Entity<User>());
       new MovieConfiguration(modelBuilder.Entity<Movie>());
+      new RefreshTokenConfiguration(modelBuilder.Entity<RefreshToken>());
     }
   }
 }

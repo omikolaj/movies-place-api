@@ -24,18 +24,22 @@ using Microsoft.IdentityModel.Tokens;
 using MiddlewareSample;
 using MoviesDataCore;
 using MoviesDomain.Models;
+using MoviesPlaceAPI.Auth;
 using MoviesPlaceAPI.Configurations;
 using MoviesPlaceAPI.Extensions;
+using MoviesPlaceAPI.Utilities;
 
 namespace MoviesPlaceAPI
 {
   public class Startup
   {
     private readonly ILogger _logger;
-    public Startup(IConfiguration configuration, ILogger<Startup> logger)
+    private readonly IHostingEnvironment  _env;
+    public Startup(IConfiguration configuration, ILogger<Startup> logger, IHostingEnvironment env)
     {
       Configuration = configuration;
       _logger = logger;
+      _env = env;
       Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
     }
 
@@ -54,6 +58,22 @@ namespace MoviesPlaceAPI
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      //Enable for production
+      // if (!_env.IsDevelopment())
+      // {
+      //     services.AddHttpsRedirection(options =>
+      //     {
+      //         options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+      //         options.HttpsPort = 443;
+      //     });
+      // }
+
+      services.AddSingleton<IConfiguration>(provider => Configuration);
+      services.AddTransient<Tokens>();
+      services.AddTransient<GetIdentity>();
+
+      services.AddScoped<CookieFilter>();
+
       services.AddMvc(opt => {
           opt.UseCentralRoutePrefix(new RouteAttribute("api/v1"));
         }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -114,6 +134,8 @@ namespace MoviesPlaceAPI
       app.UseHttpsRedirection();
 
       app.UseAuthentication();
+
+      app.UseHttpsRedirection();
 
       app.SeedDatabase();
 

@@ -6,12 +6,15 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MoviesDomain;
+using MoviesDomain.Converters;
 using MoviesDomain.Models;
 using MoviesDomain.Supervisor;
 using MoviesDomain.ViewModels;
@@ -22,29 +25,30 @@ namespace MoviesPlaceAPI.Controllers
 {
   [Route("[controller]")]
   [Produces("application/json")]
+  [AllowAnonymous]
   public class SessionController : MoviesPlaceBaseController
   {
-    private readonly ILogger _logger;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly ILogger _logger;    
     private readonly IJwtFactory _jwtFactory;
-    private readonly JwtIssuerOptions _jwtOptions;    
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly JwtIssuerOptions _jwtOptions;     
+    private readonly GetIdentity _getIdentity;   
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signinManager;
 
     public SessionController(IMoviesPlaceSupervisor moviesPlaceSupervisor,
-                              SignInManager<User> signInManager,
-                              UserManager<User> userManage,
-                              RoleManager<IdentityRole> roleManager,
+                              UserManager<User> userManager,
                               IJwtFactory jwtFactory, 
                               IOptions<JwtIssuerOptions> jwtOptions,
-                              ILogger<SessionController> logger) : base(moviesPlaceSupervisor)
-    {
-      _signInManager = signInManager;
-      _userManager = userManage;
+                              GetIdentity getIdentity,
+                              ILogger<SessionController> logger,
+                              SignInManager<User> signInManager) : base(moviesPlaceSupervisor)
+    {          
       _jwtFactory = jwtFactory;
       _jwtOptions = jwtOptions.Value;
-      _logger = logger;
-      _roleManager = roleManager;
+      _userManager = userManager;
+      _getIdentity = getIdentity;
+      _signinManager = signInManager;
+      _logger = logger;      
     }
 
     [HttpPost("login")]
@@ -55,18 +59,30 @@ namespace MoviesPlaceAPI.Controllers
         return BadRequest(ModelState);
       }
 
-      ClaimsIdentity identity = await GetClaimsIdentity(userLogin.UserName, userLogin.Password);
+      ClaimsIdentity identity = await _getIdentity.GetClaimsIdentity(userLogin.UserName, userLogin.Password);
 
       if(identity == null)
       {
         return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
       }
+
+      var userView = UserConverter.Convert(_userManager.Users.Include(u => u.RefreshToken).SingleOrDefault(u => u.UserName == userLogin.UserName));
+
+      // if(userView.RefreshToken != null)
+      // {
+      //   await _moviesPlaceSupervisor.DeleteRefreshTokenAsync(userView, userView.RefreshToken);
+      // }
+
+      string refreshToken = Tokens.GenerateRefreshToken();      
+
+      await _moviesPlaceSupervisor.SaveRefreshTokenAsync(userView, refreshToken);
       
       string jwt = await Tokens.
                           GenerateJwt(identity, 
                           _jwtFactory, 
                           userLogin.UserName, 
-                          _jwtOptions, 
+                          _jwtOptions,
+                          refreshToken, 
                           new JsonSerializerSettings { 
                             Formatting = Formatting.Indented 
                         });
@@ -76,64 +92,29 @@ namespace MoviesPlaceAPI.Controllers
         jwt,
         new Microsoft.AspNetCore.Http.CookieOptions(){
           HttpOnly = true,
-          SameSite = SameSiteMode.Strict
+          SameSite = SameSiteMode.Strict,
+          Expires = DateTime.Now.AddDays(5)
         }
       );
       
       return new OkObjectResult(jwt);
 
     }
-    private async Task<ClaimsIdentity> GetClaimsIdentity(string userName, string password)
+    
+    [HttpDelete("logout")]    
+    public async Task<ActionResult<bool>> Logout(CancellationToken ct = default(CancellationToken))
     {
-      if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
-        return await Task.FromResult<ClaimsIdentity>(null);
+      DeleteAllCookies(Request.Cookies.Keys);
 
-      // get the user to verifty
-      var userToVerify = await _userManager.FindByNameAsync(userName);
+      await _signinManager.SignOutAsync();
 
-      if (userToVerify == null) return await Task.FromResult<ClaimsIdentity>(null);
-
-      // check the credentials
-      if (await _userManager.CheckPasswordAsync(userToVerify, password))
-      {
-        return await GenerateClaimsIdentity(userToVerify);
-      }
-
-      // Credentials are invalid, or account doesn't exist
-      return await Task.FromResult<ClaimsIdentity>(null);
+      return new OkObjectResult(true);
     }
 
-    private async Task<ClaimsIdentity> GenerateClaimsIdentity(User user)
-    {
-      //new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"),
-
-      IdentityOptions options = new IdentityOptions();      
-
-      // Create claims List
-      var claims =  new List<Claim>()
-      {
-        new Claim(Constants.Strings.JwtClaimIdentifiers.Id, user.Id),
-        new Claim(Constants.Strings.JwtClaimIdentifiers.UserName, user.UserName)
-      };
-
-      // Retrieve user claims
-      var userClaims = await _userManager.GetClaimsAsync(user);
-      // Retrieve user roles
-      var userRoles = await _userManager.GetRolesAsync(user);
-
-      claims.AddRange(userClaims);
-      foreach(var userRole in userRoles){
-        claims.Add(new Claim(Constants.Strings.JwtClaimIdentifiers.Role, userRole));
-        var role = await _roleManager.FindByNameAsync(userRole);
-        if(role != null){
-          var roleClaims = await _roleManager.GetClaimsAsync(role);
-          foreach(Claim roleClaim in roleClaims){
-            claims.Add(roleClaim);
-          }
-        }
+    private void DeleteAllCookies(ICollection<string> cookies){
+      foreach(string cookie in cookies){
+        Response.Cookies.Delete(cookie);
       }
-
-      return new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"), claims);      
     }
 
   }

@@ -8,7 +8,7 @@ namespace MoviesDomain.Repositories
 {
   public interface IFavoriteRepository : IDisposable
   {
-    Task<List<Favorite>> GetAllByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+    Task<List<Favorite>> GetAllByUserIDAsync(string ID, CancellationToken ct = default(CancellationToken));
 
     Task<List<Favorite>> GetAllByMovieIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 

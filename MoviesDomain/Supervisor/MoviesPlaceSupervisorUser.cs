@@ -17,7 +17,7 @@ namespace MoviesDomain.Supervisor
             return usersViewModel;
         }
 
-        public async Task<UserViewModel> GetUserByIDAsync(int ID, CancellationToken ct = default(CancellationToken))
+        public async Task<UserViewModel> GetUserByIDAsync(string ID, CancellationToken ct = default(CancellationToken))
         {
             UserViewModel userViewModel = UserConverter.Convert(await _userRepository.GetByIDAsync(ID, ct));
 
@@ -30,7 +30,7 @@ namespace MoviesDomain.Supervisor
 
         public async Task<UserViewModel> GetUserByPostIDAsync(int ID, CancellationToken ct = default(CancellationToken))
         {
-          int userID = int.Parse(_postRepository.GetByIDAsync(ID, ct).Result.UserID);
+          string userID = _postRepository.GetByIDAsync(ID, ct).Result.UserID;
           UserViewModel userViewModel = UserConverter.Convert(await _userRepository.GetByIDAsync(userID, ct));
 
           userViewModel.Comments = await GetAllCommentsByUserIDAsync(userViewModel.UserID, ct);
@@ -50,7 +50,7 @@ namespace MoviesDomain.Supervisor
             };
 
             user = await _userRepository.AddAsync(user, ct);
-            userViewModel.UserID = int.Parse(user.Id);
+            userViewModel.UserID = user.Id;
 
             return userViewModel;
         }
@@ -66,7 +66,7 @@ namespace MoviesDomain.Supervisor
             return await _userRepository.UpdateAsync(user, ct);
         }
 
-        public async Task<bool> DeleteUserAsync(int ID, CancellationToken ct = default(CancellationToken))
+        public async Task<bool> DeleteUserAsync(string ID, CancellationToken ct = default(CancellationToken))
         {
             return await _userRepository.DeleteAsync(ID, ct);
         }

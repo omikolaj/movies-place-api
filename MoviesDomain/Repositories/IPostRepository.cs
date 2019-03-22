@@ -12,7 +12,7 @@ namespace MoviesDomain.Repositories
 
     Task<Post> GetByIDAsync(int? ID, CancellationToken ct = default(CancellationToken));
 
-    Task<List<Post>> GetAllByUserIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+    Task<List<Post>> GetAllByUserIDAsync(string ID, CancellationToken ct = default(CancellationToken));
 
     Task<Post> AddAsync(Post post, CancellationToken ct = default(CancellationToken));
 
