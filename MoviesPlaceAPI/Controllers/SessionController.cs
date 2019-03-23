@@ -51,6 +51,60 @@ namespace MoviesPlaceAPI.Controllers
       _logger = logger;      
     }
 
+    [HttpPost("signup")]
+    public async Task<ActionResult> SignUp(UserViewModel user, CancellationToken ct = default(CancellationToken))
+    {
+      if(!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+      User newUser = new User(){
+        UserName = user.Username,
+        Email = user.Email        
+      };
+
+      var result = await _userManager.CreateAsync(newUser, user.Password);
+
+      if(!result.Succeeded)
+      {
+        return BadRequest(Errors.AddErrorsToModelState(result, ModelState));
+      }
+
+      newUser = _userManager.Users.SingleOrDefault(u => u.UserName == user.Username);
+
+      UserViewModel userView = UserConverter.Convert(newUser);
+
+      ClaimsIdentity identity = await _getIdentity.GetClaimsIdentityForNewUser(newUser);
+
+      string refreshToken = Tokens.GenerateRefreshToken();
+
+      await _moviesPlaceSupervisor.SaveRefreshTokenAsync(userView, refreshToken);
+
+      string jwt = await Tokens.
+                          GenerateJwt(identity, 
+                          _jwtFactory, 
+                          userView.Username, 
+                          _jwtOptions,
+                          refreshToken, 
+                          new JsonSerializerSettings { 
+                            Formatting = Formatting.Indented 
+                        });
+
+      Response.Cookies.Append(
+        "token",
+        jwt,
+        new Microsoft.AspNetCore.Http.CookieOptions(){
+          HttpOnly = true,
+          SameSite = SameSiteMode.Strict,
+          Expires = DateTime.Now.AddDays(5)
+        }
+      );
+      
+      return new OkObjectResult(jwt);
+
+    }
+
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] LoginViewModel userLogin, CancellationToken ct = default(CancellationToken))
     {
@@ -67,11 +121,6 @@ namespace MoviesPlaceAPI.Controllers
       }
 
       var userView = UserConverter.Convert(_userManager.Users.Include(u => u.RefreshToken).SingleOrDefault(u => u.UserName == userLogin.UserName));
-
-      // if(userView.RefreshToken != null)
-      // {
-      //   await _moviesPlaceSupervisor.DeleteRefreshTokenAsync(userView, userView.RefreshToken);
-      // }
 
       string refreshToken = Tokens.GenerateRefreshToken();      
 

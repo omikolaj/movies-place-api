@@ -39,10 +39,6 @@ namespace MoviesPlaceAPI.Auth
 
     public async Task<ClaimsIdentity> GenerateClaimsIdentity(User user)
     {
-      //new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"),
-
-      // IdentityOptions options = new IdentityOptions();      
-
       // Create claims List
       var claims =  new List<Claim>()
       {
@@ -69,5 +65,20 @@ namespace MoviesPlaceAPI.Auth
 
       return new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"), claims);      
     }
+
+    public async Task<ClaimsIdentity> GetClaimsIdentityForNewUser(User user)
+    {
+      // Add new user to the SuperUser Role. This is only to allow each new user to excercise
+      // all CRUD actions 
+      var result = await _userManager.AddToRoleAsync(user, "SUPERUSER");
+
+      if(!result.Succeeded){
+        return await Task.FromResult<ClaimsIdentity>(null);
+      }
+
+      return await this.GenerateClaimsIdentity(user);
+
+    }
+
   }
 }
