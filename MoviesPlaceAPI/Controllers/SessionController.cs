@@ -59,6 +59,19 @@ namespace MoviesPlaceAPI.Controllers
         return BadRequest(ModelState);
       }
 
+      //Check if the user is already registered
+      User existingUserName = _userManager.Users.Where(u => u.UserName == user.Username).FirstOrDefault();
+      //Check if email is already registered
+      User existingEmail = _userManager.Users.Where(u => u.Email == user.Email).FirstOrDefault();
+      if(existingUserName != null)
+      {                
+        return BadRequest(Errors.AddErrorToModelState("username", "This username already exists", ModelState));
+      }
+      if(existingEmail != null)
+      {
+        return BadRequest(Errors.AddErrorToModelState("email", "This email already exists", ModelState));
+      }
+
       User newUser = new User(){
         UserName = user.Username,
         Email = user.Email        

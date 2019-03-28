@@ -8,14 +8,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MoviesDomain;
+using MoviesDomain.Converters;
 using MoviesDomain.Models;
 using MoviesDomain.Supervisor;
 using MoviesDomain.ViewModels;
+using MoviesPlaceAPI.Auth;
 
 namespace MoviesPlaceAPI.Controllers
 {
     [Route("[controller]")]
     [Produces("application/json")]
+    [Authorize]
     public class PostsController : MoviesPlaceBaseController
     {
       private readonly ILogger _logger;
@@ -25,8 +28,7 @@ namespace MoviesPlaceAPI.Controllers
       }
 
         // GET api/v1/posts
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         [Produces(typeof(List<PostViewModel>))]
         public async Task<ActionResult<List<PostViewModel>>> Get(CancellationToken ct = default(CancellationToken))
         {
@@ -51,14 +53,48 @@ namespace MoviesPlaceAPI.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] PostViewModel post)
         {
+
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<PostViewModel>> Patch(int id, [FromBody] PostViewModel post)
+        {
+          //Check if post exists
+          PostViewModel postViewModel = await  _moviesPlaceSupervisor.GetPostByIDAsync(id);
+          if(postViewModel == null)
+          {
+            return BadRequest(Errors.AddErrorToModelState("post_update_failure", "The provided post could not be found", ModelState));
+          }
+
+          if(await _moviesPlaceSupervisor.UpdatePostAsync(post))
+          {
+            postViewModel = await _moviesPlaceSupervisor.GetPostByIDAsync(id);
+            return new OkObjectResult(postViewModel);
+          }
+
+          return BadRequest(Errors.AddErrorToModelState("post_update_failure", "Failed to successfully update the post", ModelState));
+
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<int>> Delete(int id)
         {
+          //Check if post exists
+          PostViewModel postViewModelToDelete = await _moviesPlaceSupervisor.GetPostByIDAsync(id);
+          if(postViewModelToDelete == null)
+          {
+            return BadRequest(Errors.AddErrorToModelState("post_delete_failure", "The provided post for deletion could not be found", ModelState));
+          }
+
+          if(await _moviesPlaceSupervisor.DeletePostAsync((int)postViewModelToDelete.PostID))
+          {
+            return new OkObjectResult(id);
+          }
+
+          return BadRequest();
         }
     }
 }

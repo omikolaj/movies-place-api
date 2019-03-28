@@ -63,7 +63,7 @@ namespace MoviesDataCore.Repositories
 
     public async Task<Post> GetByIDAsync(int? ID, CancellationToken ct = default(CancellationToken))
     {
-      return await _dbContext.Posts.FindAsync(ID);
+      return await _dbContext.Posts.Include(p => p.User).Include(p => p.Movie).SingleOrDefaultAsync(p => p.PostID == ID);
     }
 
     public async Task<bool> UpdateAsync(Post post, CancellationToken ct = default(CancellationToken))
