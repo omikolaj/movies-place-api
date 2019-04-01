@@ -58,7 +58,7 @@ namespace MoviesDataCore.Repositories
 
     public async Task<List<Post>> GetAllByUserIDAsync(string ID, CancellationToken ct = default(CancellationToken))
     {
-      return await _dbContext.Posts.Where(p => p.UserID == ID).ToListAsync(ct);
+      return await _dbContext.Posts.Include(p => p.Movie).Where(p => p.UserID == ID).ToListAsync(ct);
     }
 
     public async Task<Post> GetByIDAsync(int? ID, CancellationToken ct = default(CancellationToken))

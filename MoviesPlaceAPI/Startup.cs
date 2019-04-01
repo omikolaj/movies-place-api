@@ -35,12 +35,13 @@ namespace MoviesPlaceAPI
   {
     private readonly ILogger _logger;
     private readonly IHostingEnvironment  _env;
+    public string test = "";
     public Startup(IConfiguration configuration, ILogger<Startup> logger, IHostingEnvironment env)
     {
       Configuration = configuration;
       _logger = logger;
       _env = env;
-      Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+      Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;      
     }
 
     public IConfiguration Configuration { get; }
@@ -59,18 +60,19 @@ namespace MoviesPlaceAPI
     public void ConfigureServices(IServiceCollection services)
     {
       //Enable for production
-      // if (!_env.IsDevelopment())
-      // {
-      //     services.AddHttpsRedirection(options =>
-      //     {
-      //         options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
-      //         options.HttpsPort = 443;
-      //     });
-      // }
+      if (!_env.IsDevelopment())
+      {
+        services.AddHttpsRedirection(options =>
+        {
+          options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+          options.HttpsPort = 443;
+        });
+      }
 
       services.AddSingleton<IConfiguration>(provider => Configuration);
       services.AddTransient<Tokens>();
       services.AddTransient<GetIdentity>();
+      services.AddTransient<CloudinaryService>();
 
       services.AddScoped<CookieFilter>();
 

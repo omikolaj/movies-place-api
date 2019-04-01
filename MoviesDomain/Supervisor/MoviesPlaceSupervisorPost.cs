@@ -40,18 +40,27 @@ namespace MoviesDomain.Supervisor
 
     public async Task<PostViewModel> AddPostAsync(PostViewModel postViewModel, CancellationToken ct = default(CancellationToken))
     {
+      Movie movie = new Movie()
+      {
+        Title = postViewModel.Movie.Title
+      };
+
+      movie = await _movieRepository.AddAsync(movie, ct);
+
       Post post = new Post()
       {
         Title = postViewModel.Title,
         Description = postViewModel.Description,
-        MovieID = postViewModel.MovieID,
+        MovieID = movie.MovieID,
         PostDate = new System.DateTime(),
         Rating = postViewModel.Rating, 
-        UserID = postViewModel.UserID.ToString()       
+        UserID = postViewModel.UserID.ToString(),
+        MoviePictureID = postViewModel.MoviePictureID ?? "1",
+        MoviePictureURL = postViewModel.MoviePictureURL ?? string.Empty
       };
       post = await _postRepository.AddAsync(post, ct);
       postViewModel.PostID = post.PostID;
-      postViewModel.Movie = await GetMovieByIDAsync(postViewModel.MovieID, ct);
+      postViewModel.Movie = await GetMovieByIDAsync(movie.MovieID, ct);
       postViewModel.User = await GetUserByIDAsync(postViewModel.UserID, ct);
 
       return postViewModel;

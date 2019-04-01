@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>899a97ca-67aa-4fb2-bfce-bc38538a7082</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>        
-    <PackageReference Include="AspNetCore.RouteAnalyzer" Version="0.5.3" />                
+    <PackageReference Include="AspNetCore.RouteAnalyzer" Version="0.5.3" />        
+    <PackageReference Include="Cloudinary.Core" Version="1.31.0" />                
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.1" />                
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.4.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.2" />    

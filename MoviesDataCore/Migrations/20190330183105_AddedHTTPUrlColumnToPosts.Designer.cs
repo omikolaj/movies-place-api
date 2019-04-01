@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesDataCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MoviesDataCore.Migrations
 {
     [DbContext(typeof(MoviesPlaceContext))]
-    partial class MoviesPlaceContextModelSnapshot : ModelSnapshot
+    [Migration("20190330183105_AddedHTTPUrlColumnToPosts")]
+    partial class AddedHTTPUrlColumnToPosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,8 +210,6 @@ namespace MoviesDataCore.Migrations
 
                     b.Property<int>("MovieID");
 
-                    b.Property<string>("MoviePictureID");
-
                     b.Property<string>("MoviePictureURL");
 
                     b.Property<DateTime>("PostDate");
@@ -237,8 +237,7 @@ namespace MoviesDataCore.Migrations
                             PostID = 1,
                             Description = "Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.",
                             MovieID = 1,
-                            MoviePictureID = "1",
-                            PostDate = new DateTime(2019, 3, 30, 14, 43, 23, 719, DateTimeKind.Local).AddTicks(3763),
+                            PostDate = new DateTime(2019, 3, 30, 14, 31, 5, 532, DateTimeKind.Local).AddTicks(1393),
                             Rating = 4,
                             Title = "I really liked watching her laugh",
                             UserID = "1"
@@ -318,7 +317,7 @@ namespace MoviesDataCore.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8585056b-4d41-42fc-8d40-0efeac91f65d",
+                            ConcurrencyStamp = "e3f32bfe-2431-415b-b628-cdc54ec03465",
                             Email = "scotty@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -331,7 +330,7 @@ namespace MoviesDataCore.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8bfa92fb-c042-479e-8afe-64f0a3fb4cb3",
+                            ConcurrencyStamp = "50f742ca-0b9d-4e59-90b8-514bc423d530",
                             Email = "levi@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

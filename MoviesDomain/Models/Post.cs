@@ -23,6 +23,8 @@ namespace MoviesDomain.Models
     public string Description { get; set; }    
     [Required]
     public int Rating { get; set; }
+    public string MoviePictureURL { get; set; }
+    public string MoviePictureID { get; set; } = "1";
     public DateTime PostDate { get; set; }    
     public IEnumerable<Comment> Comments { get; set; }      
     public int MovieID { get; set; }

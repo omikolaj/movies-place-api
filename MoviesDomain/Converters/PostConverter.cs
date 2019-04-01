@@ -17,6 +17,8 @@ namespace MoviesDomain.Converters
       postViewModel.Title = post.Title;
       postViewModel.Rating = post.Rating;
       postViewModel.MovieID = post.MovieID;
+      postViewModel.MoviePictureURL = post.MoviePictureURL;
+      postViewModel.MoviePictureID = post.MoviePictureID;
       postViewModel.Comments = CommentConverter.ConvertList(post.Comments);
       postViewModel.User = UserConverter.Convert(post.User);
       postViewModel.Movie = MovieConverter.Convert(post.Movie);
@@ -36,6 +38,8 @@ namespace MoviesDomain.Converters
         postViewModel.UserID = p.UserID;
         postViewModel.Title = p.Title;
         postViewModel.Rating = p.Rating;
+        postViewModel.MoviePictureID = p.MoviePictureID;
+        postViewModel.MoviePictureURL = p.MoviePictureURL;
         postViewModel.Comments = CommentConverter.ConvertList(p.Comments);
         postViewModel.User = UserConverter.Convert(p.User);
         postViewModel.Movie = MovieConverter.Convert(p.Movie);

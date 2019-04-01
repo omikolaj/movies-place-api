@@ -53,7 +53,7 @@ namespace MoviesDomain.Supervisor
     #region Post
     Task<List<PostViewModel>> GetAllPostsAsync(CancellationToken ct = default(CancellationToken));
 
-    Task<PostViewModel>  GetPostByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
+    Task<PostViewModel> GetPostByIDAsync(int ID, CancellationToken ct = default(CancellationToken));
 
     Task<List<PostViewModel>> GetAllPostsByUserIDAsync(string ID, CancellationToken ct = default(CancellationToken));
 
